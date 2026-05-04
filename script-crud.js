@@ -31,13 +31,12 @@ function criarElementoTarefa(tarefa) {
     botao.classList.add('app_button-edit');
 
     botao.onclick = () => {
-        console.log('Objeto ANTES da edição:', tarefa); // Verifique o estado atual
         const novaDescricao = prompt('Qual é o novo nome da tarefa?');
-        paragrafo.textContent = novaDescricao;
-        tarefa.descricao = novaDescricao;
-        console.log('Objeto DEPOIS da edição:', tarefa);
-        console.log('Array global atualizado:', tarefas); // Verifique que o array mudou sem busca manual
-        atualizarTarefas();
+        if (novaDescricao) {
+            paragrafo.textContent = novaDescricao;
+            tarefa.descricao = novaDescricao;
+            atualizarTarefas();
+        }
     };
 
     const imagemBotao = document.createElement('img');
@@ -69,7 +68,6 @@ formAdicionarTarefa.addEventListener('submit', (evento) => {
 });
 
 tarefas.forEach((tarefa) => {
-    console.log('Carregando tarefa da memória:', tarefa); // Log do objeto original
     const elementoTarefa = criarElementoTarefa(tarefa);
     ulTarefas.append(elementoTarefa);
 });
