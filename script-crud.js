@@ -50,23 +50,27 @@ function criarElementoTarefa(tarefa) {
     li.append(svg);
     li.append(paragrafo);
     li.append(botao);
+    if (tarefa.completa) {
+        li.classList.add('app__section-task-list-item-complete');
+        botao.setAttribute('disabled', 'disabled');
+    } else {
+        li.onclick = () => {
+            document.querySelectorAll('.app__section-task-list-item-active').forEach((elemento) => {
+                elemento.classList.remove('app__section-task-list-item-active');
+            });
+            if (tarefaSelecionada == tarefa) {
+                paragrafoDescricaoTarefa.textContent = '';
+                tarefaSelecionada = null;
+                liTarefaSelecionada = null;
+                return;
+            }
+            tarefaSelecionada = tarefa;
+            liTarefaSelecionada = li;
+            paragrafoDescricaoTarefa.textContent = tarefa.descricao;
 
-    li.onclick = () => {
-        document.querySelectorAll('.app__section-task-list-item-active').forEach((elemento) => {
-            elemento.classList.remove('app__section-task-list-item-active');
-        });
-        if (tarefaSelecionada == tarefa) {
-            paragrafoDescricaoTarefa.textContent = '';
-            tarefaSelecionada = null;
-            liTarefaSelecionada = null;
-            return;
-        }
-        tarefaSelecionada = tarefa;
-        liTarefaSelecionada = li;
-        paragrafoDescricaoTarefa.textContent = tarefa.descricao;
-
-        li.classList.add('app__section-task-list-item-active');
-    };
+            li.classList.add('app__section-task-list-item-active');
+        };
+    }
 
     return li;
 }
@@ -104,5 +108,7 @@ document.addEventListener('FocoFinalizado', () => {
         liTarefaSelecionada.classList.remove('app__section-task-list-item-active');
         liTarefaSelecionada.classList.add('app__section-task-list-item-complete');
         liTarefaSelecionada.querySelector('button').setAttribute('disabled', 'disabled');
+        tarefaSelecionada.completa = true;
+        atualizarTarefas();
     }
 });
